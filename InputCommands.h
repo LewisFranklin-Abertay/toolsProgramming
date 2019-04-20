@@ -8,4 +8,11 @@ struct InputCommands
 	bool left;
 	bool rotRight;
 	bool rotLeft;
+
+	long mouse_X;
+	long mouse_Y;
+
+	bool focusCamera;
+	bool orbCam;
+	bool WireFrame;
 };

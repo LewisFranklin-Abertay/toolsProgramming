@@ -3,10 +3,15 @@
 
 
 BEGIN_MESSAGE_MAP(MFCMain, CWinApp)
-	ON_COMMAND(ID_FILE_QUIT,	&MFCMain::MenuFileQuit)
+	ON_COMMAND(ID_FILE_QUIT, &MFCMain::MenuFileQuit)
 	ON_COMMAND(ID_FILE_SAVETERRAIN, &MFCMain::MenuFileSaveTerrain)
+	ON_COMMAND(ID_EDIT_LOADTERRAIN, &MFCMain::MenuEditLoadTerrain)
+	ON_COMMAND(ID_EDIT_TEXTURETERRAIN, &MFCMain::MenuEditLoadTerrainTexture)
+	ON_COMMAND(ID_EDIT_NEWMODEL, &MFCMain::MenuEditNewModel)
 	ON_COMMAND(ID_EDIT_SELECT, &MFCMain::MenuEditSelect)
-	ON_COMMAND(ID_BUTTON40001,	&MFCMain::ToolBarButton1)
+	ON_COMMAND(ID_EDIT_TRANSFORM, &MFCMain::MenuEditTransform)
+	ON_COMMAND(ID_BUTTON40001, &MFCMain::ToolBarButton1)
+	ON_COMMAND(ID_BUTTON40009, &MFCMain::ToolBarButton2)
 	ON_UPDATE_COMMAND_UI(ID_INDICATOR_TOOL, &CMyFrame::OnUpdatePage)
 END_MESSAGE_MAP()
 
@@ -16,26 +21,27 @@ BOOL MFCMain::InitInstance()
 	m_frame = new CMyFrame();
 	m_pMainWnd = m_frame;
 
-	m_frame->Create(	NULL,
-					_T("World Of Flim-Flam Craft Editor"),
-					WS_OVERLAPPEDWINDOW,
-					CRect(100, 100, 1024, 768),
-					NULL,
-					NULL,
-					0,
-					NULL
-				);
+	m_frame->Create(NULL,
+		_T("World Of Flim-Flam Craft Editor"),
+		WS_OVERLAPPEDWINDOW,
+		CRect(100, 100, 1024, 768),
+		NULL,
+		NULL,
+		0,
+		NULL
+	);
 
 	//show and set the window to run and update. 
 	m_frame->ShowWindow(SW_SHOW);
 	m_frame->UpdateWindow();
+	m_frame->m_toolMain = &m_ToolSystem;
 
 
 	//get the rect from the MFC window so we can get its dimensions
 	m_toolHandle = m_frame->m_DirXView.GetSafeHwnd();				//handle of directX child window
 	m_frame->m_DirXView.GetClientRect(&WindowRECT);
-	m_width		= WindowRECT.Width();
-	m_height	= WindowRECT.Height();
+	m_width = WindowRECT.Width();
+	m_height = WindowRECT.Height();
 
 	m_ToolSystem.onActionInitialise(m_toolHandle, m_width, m_height);
 
@@ -68,13 +74,26 @@ int MFCMain::Run()
 			m_ToolSystem.UpdateInput(&msg);
 		}
 		else
-		{	
+		{
 			int ID = m_ToolSystem.getCurrentSelectionID();
 			std::wstring statusString = L"Selected Object: " + std::to_wstring(ID);
 			m_ToolSystem.Tick(&msg);
 
+			if (m_TransformDialogue)
+			{
+				m_TransformDialogue.UpdateData(FALSE);
+			}
+
+			if (m_TransformDialogue.transChanged())
+			{
+				SceneObject holder;
+				m_TransformDialogue.passOutObject(holder);
+				m_ToolSystem.updateObject(&holder, ID);
+				m_TransformDialogue.HasObjectDataChanged();
+			}
+
 			//send current object ID to status bar in The main frame
-			m_frame->m_wndStatusBar.SetPaneText(1, statusString.c_str(), 1);	
+			m_frame->m_wndStatusBar.SetPaneText(1, statusString.c_str(), 1);
 		}
 	}
 
@@ -92,6 +111,18 @@ void MFCMain::MenuFileSaveTerrain()
 	m_ToolSystem.onActionSaveTerrain();
 }
 
+void MFCMain::MenuEditLoadTerrain()
+{
+	m_frame->LoadTerrain();
+}
+void MFCMain::MenuEditLoadTerrainTexture()
+{
+	m_frame->LoadTerrainTexture();
+}
+void MFCMain::MenuEditNewModel()
+{
+	m_frame->NewModel();
+}
 void MFCMain::MenuEditSelect()
 {
 	//SelectDialogue m_ToolSelectDialogue(NULL, &m_ToolSystem.m_sceneGraph);		//create our dialoguebox //modal constructor
@@ -103,12 +134,25 @@ void MFCMain::MenuEditSelect()
 	m_ToolSelectDialogue.SetObjectData(&m_ToolSystem.m_sceneGraph, &m_ToolSystem.m_selectedObject);
 }
 
+void MFCMain::MenuEditTransform()
+{
+	if (m_ToolSystem.getCurrentSelectionID() > -1)
+	{
+		//modeless dialogue must be declared in the class.   If we do local it will go out of scope instantly and destroy itself
+		m_TransformDialogue.Create(IDD_DIALOG2);	//Start up modeless
+		m_TransformDialogue.passInObject(m_ToolSystem.GetSelectedObject());
+		m_TransformDialogue.ShowWindow(SW_SHOW);
+	}
+}
 void MFCMain::ToolBarButton1()
 {
-	
 	m_ToolSystem.onActionSave();
 }
 
+void MFCMain::ToolBarButton2()
+{
+	m_ToolSystem.WireFrameToggle();
+}
 
 MFCMain::MFCMain()
 {

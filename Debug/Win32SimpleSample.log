@@ -1,22 +1,83 @@
-﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(387,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (Win32SimpleSample.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(391,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (Win32SimpleSample.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  Camera.cpp
+m:\github\toolsprogrammingmaster\camera.cpp(88): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+m:\github\toolsprogrammingmaster\camera.cpp(89): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  ChunkObject.cpp
+  DeviceResources.cpp
+  DisplayChunk.cpp
+m:\github\toolsprogrammingmaster\displaychunk.cpp(14): warning C4305: '=': truncation from 'double' to 'float'
+m:\github\toolsprogrammingmaster\displaychunk.cpp(15): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+m:\github\toolsprogrammingmaster\displaychunk.cpp(87): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+m:\github\toolsprogrammingmaster\displaychunk.cpp(106): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(205): note: see declaration of 'fopen'
+m:\github\toolsprogrammingmaster\displaychunk.cpp(108): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(205): note: see declaration of 'fopen'
+m:\github\toolsprogrammingmaster\displaychunk.cpp(162): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(205): note: see declaration of 'fopen'
+m:\github\toolsprogrammingmaster\displaychunk.cpp(202): warning C4101: 'index4': unreferenced local variable
+m:\github\toolsprogrammingmaster\displaychunk.cpp(202): warning C4101: 'index2': unreferenced local variable
+m:\github\toolsprogrammingmaster\displaychunk.cpp(202): warning C4101: 'index3': unreferenced local variable
+m:\github\toolsprogrammingmaster\displaychunk.cpp(202): warning C4101: 'index1': unreferenced local variable
+  DisplayObject.cpp
+  Game.cpp
+m:\github\toolsprogrammingmaster\game.cpp(206): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+m:\github\toolsprogrammingmaster\game.cpp(205): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+m:\github\toolsprogrammingmaster\game.cpp(204): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+m:\github\toolsprogrammingmaster\game.cpp(190): warning C4101: 'Buffer': unreferenced local variable
+m:\github\toolsprogrammingmaster\game.cpp(569): warning C4244: 'argument': conversion from 'LONG' to 'float', possible loss of data
+m:\github\toolsprogrammingmaster\game.cpp(570): warning C4244: 'argument': conversion from 'LONG' to 'float', possible loss of data
+m:\github\toolsprogrammingmaster\game.cpp(573): warning C4018: '<': signed/unsigned mismatch
+m:\github\toolsprogrammingmaster\game.cpp(582): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+m:\github\toolsprogrammingmaster\game.cpp(581): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+m:\github\toolsprogrammingmaster\game.cpp(580): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+m:\github\toolsprogrammingmaster\game.cpp(588): warning C4244: 'argument': conversion from 'LONG' to 'float', possible loss of data
+m:\github\toolsprogrammingmaster\game.cpp(589): warning C4244: 'argument': conversion from 'LONG' to 'float', possible loss of data
+m:\github\toolsprogrammingmaster\game.cpp(596): warning C4018: '<': signed/unsigned mismatch
+  Main.cpp
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+  MFCFrame.cpp
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+  MFCRenderFrame.cpp
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+  pch.cpp
+  MFCMain.cpp
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+  SceneObject.cpp
+  SelectDialogue.cpp
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
   ToolMain.cpp
   _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
-c:\programming\wffc\woffcedit\toolmain.cpp(91): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\programming\wffc\woffcedit\toolmain.cpp(92): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\programming\wffc\woffcedit\toolmain.cpp(93): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\programming\wffc\woffcedit\toolmain.cpp(94): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\programming\wffc\woffcedit\toolmain.cpp(95): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\programming\wffc\woffcedit\toolmain.cpp(96): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\programming\wffc\woffcedit\toolmain.cpp(97): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\programming\wffc\woffcedit\toolmain.cpp(98): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\programming\wffc\woffcedit\toolmain.cpp(99): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\programming\wffc\woffcedit\toolmain.cpp(111): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\programming\wffc\woffcedit\toolmain.cpp(112): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\programming\wffc\woffcedit\toolmain.cpp(113): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\programming\wffc\woffcedit\toolmain.cpp(117): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\programming\wffc\woffcedit\toolmain.cpp(118): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\programming\wffc\woffcedit\toolmain.cpp(119): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-c:\programming\wffc\woffcedit\toolmain.cpp(123): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\programming\wffc\woffcedit\toolmain.cpp(124): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-  Win32SimpleSample.vcxproj -> C:\Programming\WFFC\WOFFCEdit\Debug\WoFEdit.exe
-  Win32SimpleSample.vcxproj -> C:\Programming\WFFC\WOFFCEdit\Debug\WoFEdit.pdb (Partial PDB)
+m:\github\toolsprogrammingmaster\toolmain.cpp(105): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+m:\github\toolsprogrammingmaster\toolmain.cpp(106): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+m:\github\toolsprogrammingmaster\toolmain.cpp(107): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+m:\github\toolsprogrammingmaster\toolmain.cpp(108): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+m:\github\toolsprogrammingmaster\toolmain.cpp(109): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+m:\github\toolsprogrammingmaster\toolmain.cpp(110): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+m:\github\toolsprogrammingmaster\toolmain.cpp(111): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+m:\github\toolsprogrammingmaster\toolmain.cpp(112): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+m:\github\toolsprogrammingmaster\toolmain.cpp(113): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+m:\github\toolsprogrammingmaster\toolmain.cpp(125): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+m:\github\toolsprogrammingmaster\toolmain.cpp(126): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+m:\github\toolsprogrammingmaster\toolmain.cpp(127): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+m:\github\toolsprogrammingmaster\toolmain.cpp(131): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+m:\github\toolsprogrammingmaster\toolmain.cpp(132): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+m:\github\toolsprogrammingmaster\toolmain.cpp(133): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+m:\github\toolsprogrammingmaster\toolmain.cpp(137): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+m:\github\toolsprogrammingmaster\toolmain.cpp(138): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+m:\github\toolsprogrammingmaster\toolmain.cpp(148): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+m:\github\toolsprogrammingmaster\toolmain.cpp(149): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+m:\github\toolsprogrammingmaster\toolmain.cpp(150): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+m:\github\toolsprogrammingmaster\toolmain.cpp(151): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+m:\github\toolsprogrammingmaster\toolmain.cpp(152): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+m:\github\toolsprogrammingmaster\toolmain.cpp(153): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+m:\github\toolsprogrammingmaster\toolmain.cpp(154): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+m:\github\toolsprogrammingmaster\toolmain.cpp(155): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+m:\github\toolsprogrammingmaster\toolmain.cpp(156): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+m:\github\toolsprogrammingmaster\toolmain.cpp(157): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  TransformWindow.cpp
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+  Generating Code...
+  sqlite3.c
+m:\github\toolsprogrammingmaster\sqlite3.c(29693): warning C4996: 'GetVersionExW': was declared deprecated
+  c:\program files (x86)\windows kits\8.1\include\um\sysinfoapi.h(442): note: see declaration of 'GetVersionExW'
+  Win32SimpleSample.vcxproj -> M:\GitHub\toolsProgrammingMaster\Debug\WoFEdit.exe

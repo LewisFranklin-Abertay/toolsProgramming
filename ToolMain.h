@@ -11,6 +11,8 @@
 
 class ToolMain
 {
+	constexpr static long BORDER_OFFSET = 2;
+
 public: //methods
 	ToolMain();
 	~ToolMain();
@@ -22,23 +24,35 @@ public: //methods
 	void	onActionLoad();													//load the current chunk
 	afx_msg	void	onActionSave();											//save the current chunk
 	afx_msg void	onActionSaveTerrain();									//save chunk geometry
-
 	void	Tick(MSG *msg);
 	void	UpdateInput(MSG *msg);
 
+	SceneObject* GetSelectedObject();
+	void updateObject(SceneObject* sce, int ID);
+	bool updatedID;
+	void WireFrameToggle();
+
+	void ReLoadHeightMap(std::string path);
+	void LoadModel(std::string path);
+	void TextureTerrain(std::string);
+	SceneObject* GetNewObject();
 public:	//variables
 	std::vector<SceneObject>    m_sceneGraph;	//our scenegraph storing all the objects in the current chunk
 	ChunkObject					m_chunk;		//our landscape chunk
 	int m_selectedObject;						//ID of current Selection
 
+	Game	m_d3dRenderer;
 private:	//methods
 	void	onContentAdded();
 
+	//camera stuff
+	void	UpdateClientCenter();
+	POINT	CalculateCenter(const RECT& rect) const;
+	void	captureCursor(bool val, bool forFPSCamera);
 
-		
 private:	//variables
 	HWND	m_toolHandle;		//Handle to the  window
-	Game	m_d3dRenderer;		//Instance of D3D rendering system for our tool
+								//Instance of D3D rendering system for our tool
 	InputCommands m_toolInputCommands;		//input commands that we want to use and possibly pass over to the renderer
 	CRect	WindowRECT;		//Window area rectangle. 
 	char	m_keyArray[256];
@@ -47,7 +61,18 @@ private:	//variables
 	int m_width;		//dimensions passed to directX
 	int m_height;
 	int m_currentChunk;			//the current chunk of thedatabase that we are operating on.  Dictates loading and saving. 
-	
 
-	
+
+								//camera stuff
+	POINT m_clientCenter{ 0, 0 };
+	POINT m_lastCursorPos{ 0, 0 }, m_cursorPos{ 0, 0 };
+	RECT m_windowRect, m_dxClientRect;
+
+	bool m_captureCursorThisFrame = false;
+	bool m_captureCursorForCameraThisFrame = false;
+	bool m_cursorCaptured = false;
+	bool m_cursorControlsCamera = false;
+
+	bool m_leftMouseBtnDown = false;
+	bool m_isCopied = false;
 };
