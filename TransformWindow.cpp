@@ -20,8 +20,9 @@ BEGIN_MESSAGE_MAP(TransformWindow, CDialogEx)
 	ON_EN_CHANGE(IDC_EDIT7, DataChanged)
 	ON_EN_CHANGE(IDC_EDIT8, DataChanged)
 	ON_EN_CHANGE(IDC_EDIT9, DataChanged)
-
+	ON_COMMAND(IDC_BUTTON1, LoadTexture)
 	ON_COMMAND(IDOK, &TransformWindow::End)					//ok button
+
 END_MESSAGE_MAP()
 
 
@@ -53,6 +54,7 @@ void TransformWindow::DoDataExchange(CDataExchange * pDX)
 		DDX_Text(pDX, IDC_EDIT7, m_holdObject->scaX);
 		DDX_Text(pDX, IDC_EDIT8, m_holdObject->scaY);
 		DDX_Text(pDX, IDC_EDIT9, m_holdObject->scaZ);
+
 	}
 }
 
@@ -65,7 +67,23 @@ void TransformWindow::DataChanged()
 		changedData = true;
 	}
 }
+void TransformWindow::LoadTexture()
+{
+	const TCHAR szFilter[] = _T("DDS Files (*.dds)|*.dds||");
+	CFileDialog dlg(TRUE, _T("dds"), NULL, OFN_HIDEREADONLY | OFN_FILEMUSTEXIST, szFilter, this);
+	if (dlg.DoModal() == IDOK)
+	{
+		CString sFilePath = dlg.GetPathName();
+		MessageBox(sFilePath, _T("FIle Loaded"));
 
+		std::wstring w1 = sFilePath;
+		std::string out_a;
+		out_a.assign(w1.begin(), w1.end());
+		m_holdObject->tex_diffuse_path = out_a;
+		UpdateData(TRUE);
+		changedData = true;
+	}
+}
 void TransformWindow::End()
 {
 	DestroyWindow();	//destory the window properly.  INcluding the links and pointers created.  THis is so the dialogue can start again. 

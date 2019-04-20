@@ -31,4 +31,3 @@ private:
 	float m_speed = 0.3f;
 	float m_rotSpeed = 3.f;
 };
-

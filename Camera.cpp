@@ -72,7 +72,7 @@ DirectX::SimpleMath::Matrix Camera::GetViewMatrix() const
 
 DirectX::SimpleMath::Matrix Camera::FocusCameraOnObject(Vector3 obj)
 {
-   objPos = Vector3(obj.x, obj.y, obj.z);
+	objPos = Vector3(obj.x, obj.y, obj.z);
 
 	return Matrix::CreateLookAt(objPos + OrbOffset, objPos, Vector3(0, 1, 0));
 }
@@ -92,5 +92,5 @@ DirectX::SimpleMath::Matrix Camera::OrbCamera(Vector3 obj)
 	OrbOffset = Vector3::Transform(OrbOffset, rotZ);
 
 
-	return Matrix::CreateLookAt(objPos + OrbOffset , objPos, Vector3(0,1,0));
+	return Matrix::CreateLookAt(objPos + OrbOffset, objPos, Vector3(0, 1, 0));
 }

@@ -4,6 +4,7 @@
 #include "afxwin.h"
 #include "SceneObject.h"
 #include <vector>
+#include "ToolMain.h"
 
 // SelectDialogue dialog
 
@@ -21,6 +22,9 @@ public:
 	bool transChanged() const { return changedData; }
 	void HasObjectDataChanged() { changedData = false; };
 	void DataChanged();
+	void LoadTexture();
+
+	ToolMain m_toolMain;
 																				// Dialog Data
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_DIALOG1 };
@@ -36,4 +40,5 @@ private:
 	SceneObject * m_holdObject;
 
 	bool changedData = false;
+
 };

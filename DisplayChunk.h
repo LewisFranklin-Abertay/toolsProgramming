@@ -12,11 +12,12 @@ public:
 	DisplayChunk();
 	~DisplayChunk();
 	void CustomHeightMap(std::string m_customHeightMappath);
+	void UpdatedHeightMap(bool isUpdated);
 	void PopulateChunkData(ChunkObject * SceneChunk);
 	void RenderBatch(std::shared_ptr<DX::DeviceResources>  DevResources);
 	void InitialiseBatch();	//initial setup, base coordinates etc based on scale
 	void LoadHeightMap(std::shared_ptr<DX::DeviceResources>  DevResources);
-	void SaveHeightMap(ChunkObject * SceneChunk);			//saves the heigtmap back to file.
+	void SaveHeightMap();			//saves the heigtmap back to file.
 	void UpdateTerrain();			//updates the geometry based on the heigtmap
 	void GenerateHeightmap();		//creates or alters the heightmap
 	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionNormalTexture>>  m_batch;
@@ -26,7 +27,7 @@ public:
 	Microsoft::WRL::ComPtr<ID3D11InputLayout>   m_terrainInputLayout;
 
 private:
-	
+
 	DirectX::VertexPositionNormalTexture m_terrainGeometry[TERRAINRESOLUTION][TERRAINRESOLUTION];
 	BYTE m_heightMap[TERRAINRESOLUTION*TERRAINRESOLUTION];
 	void CalculateTerrainNormals();
@@ -35,14 +36,16 @@ private:
 	int		m_terrainSize;				//size of terrain in metres
 	float	m_textureCoordStep;			//step in texture coordinates between each vertex row / column
 	float   m_terrainPositionScalingFactor;	//factor we multiply the position by to convert it from its native resolution( 0- Terrain Resolution) to full scale size in metres dictated by m_Terrainsize
-	
+	bool m_isUpdated = false;
 	std::string m_name;
 	int m_chunk_x_size_metres;
 	int m_chunk_y_size_metres;
 	int m_chunk_base_resolution;
 	std::string m_customHeightMappath;
 	std::string m_heightmap_path;
+	std::string m_updatedHeighMap_path;
 	std::string m_tex_diffuse_path;
+	std::string m_updatedTex_diffuse_path;
 	std::string m_tex_splat_alpha_path;
 	std::string m_tex_splat_1_path;
 	std::string m_tex_splat_2_path;

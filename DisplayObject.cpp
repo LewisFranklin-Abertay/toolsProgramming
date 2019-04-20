@@ -16,7 +16,7 @@ DisplayObject::DisplayObject()
 	m_render = true;
 	m_wireframe = false;
 
-	m_light_type =0;
+	m_light_type = 0;
 	m_light_diffuse_r = 0.0f;	m_light_diffuse_g = 0.0f;	m_light_diffuse_b = 0.0f;
 	m_light_specular_r = 0.0f;	m_light_specular_g = 0.0f;	m_light_specular_b = 0.0f;
 	m_light_spot_cutoff = 0.0f;
@@ -28,5 +28,5 @@ DisplayObject::DisplayObject()
 
 DisplayObject::~DisplayObject()
 {
-//	delete m_texture_diffuse;
+	//	delete m_texture_diffuse;
 }

@@ -12,7 +12,7 @@
 #include "TransformWindow.h"
 
 
-class MFCMain : public CWinApp 
+class MFCMain : public CWinApp
 {
 public:
 	MFCMain();
@@ -28,13 +28,15 @@ private:
 	CRect WindowRECT;	//Window area rectangle. 
 	SelectDialogue m_ToolSelectDialogue;			//for modeless dialogue, declare it here
 	TransformWindow m_TransformDialogue;
-	int m_width;		
+	int m_width;
 	int m_height;
-	
+
 	//Interface funtions for menu and toolbar etc requires
 	afx_msg void MenuFileQuit();
 	afx_msg void MenuFileSaveTerrain();
 	afx_msg void MenuEditLoadTerrain();
+	afx_msg void MenuEditLoadTerrainTexture();
+	afx_msg void MenuEditNewModel();
 	afx_msg void MenuEditSelect();
 	afx_msg void MenuEditTransform();
 	afx_msg	void ToolBarButton1();
