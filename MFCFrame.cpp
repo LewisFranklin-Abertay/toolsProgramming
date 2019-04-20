@@ -4,7 +4,7 @@
 
 
 BEGIN_MESSAGE_MAP(CMyFrame, CFrameWnd)
-
+	
 	ON_WM_CREATE()
 	ON_UPDATE_COMMAND_UI(ID_INDICATOR_TOOL, &CMyFrame::OnUpdatePage)
 END_MESSAGE_MAP()
@@ -50,14 +50,14 @@ int CMyFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	m_menu1.LoadMenuW(IDR_MENU1);
 	SetMenu(&m_menu1);
-
+	
 	if (!m_toolBar.CreateEx(this, TBSTYLE_TRANSPARENT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC) ||
 		!m_toolBar.LoadToolBar(IDR_TOOLBAR1))
 	{
 		TRACE0("Failed to create toolbar\n");
 		return -1;      // fail to create
 	}
-
+	
 	CRect rect;
 	GetClientRect(&rect);
 	if (!m_wndStatusBar.Create(this))
@@ -69,53 +69,4 @@ int CMyFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_wndStatusBar.SetPaneInfo(1, ID_INDICATOR_TOOL, SBPS_NORMAL, rect.Width() - 500);//set width of status bar panel
 
 	return 0;
-}
-
-void CMyFrame::LoadTerrain()
-{
-	const TCHAR szFilter[] = _T("RAW Files (*.raw)|*.raw||");
-	CFileDialog dlg(TRUE, _T("raw"), NULL, OFN_HIDEREADONLY | OFN_FILEMUSTEXIST, szFilter, this);
-	if (dlg.DoModal() == IDOK)
-	{
-		CString sFilePath = dlg.GetPathName();
-		MessageBox(sFilePath, _T("FIle Loaded"));
-
-		std::wstring w1 = sFilePath;
-		std::string out_a;
-		out_a.assign(w1.begin(), w1.end());
-
-		m_toolMain->ReLoadHeightMap(out_a);
-	}
-}
-void CMyFrame::NewModel()
-{
-	const TCHAR szFilter[] = _T("CMO Files (*.cmo)|*.cmo||");
-	CFileDialog dlg(TRUE, _T("cmo"), NULL, OFN_HIDEREADONLY | OFN_FILEMUSTEXIST, szFilter, this);
-	if (dlg.DoModal() == IDOK)
-	{
-		CString sFilePath = dlg.GetPathName();
-		MessageBox(sFilePath, _T("FIle Loaded"));
-
-		std::wstring w1 = sFilePath;
-		std::string out_a;
-		out_a.assign(w1.begin(), w1.end());
-
-		m_toolMain->LoadModel(out_a);
-	}
-}
-
-void CMyFrame::LoadTerrainTexture()
-{
-	const TCHAR szFilter[] = _T("DDS Files (*.dds)|*.dds||");
-	CFileDialog dlg(TRUE, _T("dds"), NULL, OFN_HIDEREADONLY | OFN_FILEMUSTEXIST, szFilter, this);
-	if (dlg.DoModal() == IDOK)
-	{
-		CString sFilePath = dlg.GetPathName();
-		MessageBox(sFilePath, _T("FIle Loaded"));
-
-		std::wstring w1 = sFilePath;
-		std::string out_a;
-		out_a.assign(w1.begin(), w1.end());
-		m_toolMain->TextureTerrain(out_a);
-	}
 }

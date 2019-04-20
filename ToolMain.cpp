@@ -13,12 +13,12 @@ ToolMain::ToolMain()
 	m_sceneGraph.clear();	//clear the vector for the scenegraph
 	m_databaseConnection = NULL;
 
-	////zero input commands
-	//m_toolInputCommands.forward		= false;
-	//m_toolInputCommands.back		= false;
-	//m_toolInputCommands.left		= false;
-	//m_toolInputCommands.right		= false;
-
+	//zero input commands
+	m_toolInputCommands.forward		= false;
+	m_toolInputCommands.back		= false;
+	m_toolInputCommands.left		= false;
+	m_toolInputCommands.right		= false;
+	
 }
 
 
@@ -30,47 +30,33 @@ ToolMain::~ToolMain()
 
 int ToolMain::getCurrentSelectionID()
 {
+
 	return m_selectedObject;
 }
 
 void ToolMain::onActionInitialise(HWND handle, int width, int height)
 {
 	//window size, handle etc for directX
-	m_width = width;
-	m_height = height;
-	m_toolHandle = handle;
+	m_width		= width;
+	m_height	= height;
+	
 	m_d3dRenderer.Initialize(handle, m_width, m_height);
-
-	// Initialise handle measurements
-	GetWindowRect(m_toolHandle, &m_windowRect);
-	m_windowRect.left += BORDER_OFFSET;
-	m_windowRect.top += BORDER_OFFSET;
-	m_windowRect.right -= BORDER_OFFSET;
-	m_windowRect.bottom -= BORDER_OFFSET;
-
-	GetClientRect(m_toolHandle, &m_dxClientRect);
-	UpdateClientCenter();
-
 
 	//database connection establish
 	int rc;
-	rc = sqlite3_open_v2("database/test.db", &m_databaseConnection, SQLITE_OPEN_READWRITE, NULL);
+	rc = sqlite3_open_v2("database/test.db",&m_databaseConnection, SQLITE_OPEN_READWRITE, NULL);
 
-	if (rc)
+	if (rc) 
 	{
 		TRACE("Can't open database");
 		//if the database cant open. Perhaps a more catastrophic error would be better here
 	}
-	else
+	else 
 	{
 		TRACE("Opened database successfully");
 	}
 
 	onActionLoad();
-}
-
-void ToolMain::onActionFocusCamera()
-{
 }
 
 void ToolMain::onActionLoad()
@@ -91,16 +77,16 @@ void ToolMain::onActionLoad()
 	//OBJECTS IN THE WORLD
 	//prepare SQL Text
 	sqlCommand = "SELECT * from Objects";				//sql command which will return all records from the objects table.
-														//Send Command and fill result object
-	rc = sqlite3_prepare_v2(m_databaseConnection, sqlCommand, -1, &pResults, 0);
-
+	//Send Command and fill result object
+	rc = sqlite3_prepare_v2(m_databaseConnection, sqlCommand, -1, &pResults, 0 );
+	
 	//loop for each row in results until there are no more rows.  ie for every row in the results. We create and object
 	while (sqlite3_step(pResults) == SQLITE_ROW)
-	{
+	{	
 		SceneObject newSceneObject;
 		newSceneObject.ID = sqlite3_column_int(pResults, 0);
 		newSceneObject.chunk_ID = sqlite3_column_int(pResults, 1);
-		newSceneObject.model_path = reinterpret_cast<const char*>(sqlite3_column_text(pResults, 2));
+		newSceneObject.model_path		= reinterpret_cast<const char*>(sqlite3_column_text(pResults, 2));
 		newSceneObject.tex_diffuse_path = reinterpret_cast<const char*>(sqlite3_column_text(pResults, 3));
 		newSceneObject.posX = sqlite3_column_double(pResults, 4);
 		newSceneObject.posY = sqlite3_column_double(pResults, 5);
@@ -155,7 +141,7 @@ void ToolMain::onActionLoad()
 		newSceneObject.light_constant = sqlite3_column_double(pResults, 53);
 		newSceneObject.light_linear = sqlite3_column_double(pResults, 54);
 		newSceneObject.light_quadratic = sqlite3_column_double(pResults, 55);
-
+	
 
 		//send completed object to scenegraph
 		m_sceneGraph.push_back(newSceneObject);
@@ -174,10 +160,7 @@ void ToolMain::onActionLoad()
 	m_chunk.chunk_x_size_metres = sqlite3_column_int(pResultsChunk, 2);
 	m_chunk.chunk_y_size_metres = sqlite3_column_int(pResultsChunk, 3);
 	m_chunk.chunk_base_resolution = sqlite3_column_int(pResultsChunk, 4);
-
-	//fi path changed don't do this line
 	m_chunk.heightmap_path = reinterpret_cast<const char*>(sqlite3_column_text(pResultsChunk, 5));
-
 	m_chunk.tex_diffuse_path = reinterpret_cast<const char*>(sqlite3_column_text(pResultsChunk, 6));
 	m_chunk.tex_splat_alpha_path = reinterpret_cast<const char*>(sqlite3_column_text(pResultsChunk, 7));
 	m_chunk.tex_splat_1_path = reinterpret_cast<const char*>(sqlite3_column_text(pResultsChunk, 8));
@@ -199,12 +182,7 @@ void ToolMain::onActionLoad()
 	m_d3dRenderer.BuildDisplayChunk(&m_chunk);
 
 }
-void ToolMain::ReLoadHeightMap(std::string path)
-{
-	m_chunk.heightmap_path = path;
-	m_d3dRenderer.m_displayChunk.UpdatedHeightMap(true);
-	m_d3dRenderer.BuildDisplayChunk(&m_chunk);
-}
+
 void ToolMain::onActionSave()
 {
 	//SQL
@@ -212,10 +190,10 @@ void ToolMain::onActionSave()
 	char *sqlCommand;
 	char *ErrMSG = 0;
 	sqlite3_stmt *pResults;								//results of the query
+	
 
-
-														//OBJECTS IN THE WORLD Delete them all
-														//prepare SQL Text
+	//OBJECTS IN THE WORLD Delete them all
+	//prepare SQL Text
 	sqlCommand = "DELETE FROM Objects";	 //will delete the whole object table.   Slightly risky but hey.
 	rc = sqlite3_prepare_v2(m_databaseConnection, sqlCommand, -1, &pResults, 0);
 	sqlite3_step(pResults);
@@ -227,10 +205,10 @@ void ToolMain::onActionSave()
 	for (int i = 0; i < numObjects; i++)
 	{
 		std::stringstream command;
-		command << "INSERT INTO Objects "
-			<< "VALUES(" << m_sceneGraph.at(i).ID << ","
-			<< m_sceneGraph.at(i).chunk_ID << ","
-			<< "'" << m_sceneGraph.at(i).model_path << "'" << ","
+		command << "INSERT INTO Objects " 
+			<<"VALUES(" << m_sceneGraph.at(i).ID << ","
+			<< m_sceneGraph.at(i).chunk_ID  << ","
+			<< "'" << m_sceneGraph.at(i).model_path <<"'" << ","
 			<< "'" << m_sceneGraph.at(i).tex_diffuse_path << "'" << ","
 			<< m_sceneGraph.at(i).posX << ","
 			<< m_sceneGraph.at(i).posY << ","
@@ -289,7 +267,7 @@ void ToolMain::onActionSave()
 			<< ")";
 		std::string sqlCommand2 = command.str();
 		rc = sqlite3_prepare_v2(m_databaseConnection, sqlCommand2.c_str(), -1, &pResults, 0);
-		sqlite3_step(pResults);
+		sqlite3_step(pResults);	
 	}
 	MessageBox(NULL, L"Objects Saved", L"Notification", MB_OK);
 }
@@ -298,66 +276,19 @@ void ToolMain::onActionSaveTerrain()
 {
 	m_d3dRenderer.SaveDisplayChunk(&m_chunk);
 }
+
 void ToolMain::Tick(MSG *msg)
 {
-
 	//do we have a selection
 	//do we have a mode
 	//are we clicking / dragging /releasing
 	//has something changed
-	//update Scenegraph
-	//add to scenegraph
-	//resend scenegraph to Direct X renderer
-
-	if (m_captureCursorThisFrame)
-	{
-		bool captureForCamera = (!m_cursorCaptured && m_captureCursorForCameraThisFrame);
-		captureCursor(!m_cursorCaptured, captureForCamera);
-
-		m_captureCursorThisFrame = false;
-		m_captureCursorForCameraThisFrame = false;
-	}
-
-	if (m_cursorCaptured)
-	{
-		long mouseDX = m_clientCenter.x - m_cursorPos.x;
-		long mouseDY = m_clientCenter.y - m_cursorPos.y;
-
-		if (m_cursorControlsCamera)
-		{
-			m_toolInputCommands.mouse_X = mouseDX;
-			m_toolInputCommands.mouse_Y = mouseDY;
-		}
-
-		// Move cursor back to the center of the screen
-		POINT clientCenterScreen = m_clientCenter;
-		ClientToScreen(m_toolHandle, &clientCenterScreen);
-
-		SetCursorPos(clientCenterScreen.x, clientCenterScreen.y);
-
-	}
-
-	if (m_leftMouseBtnDown)
-	{
-		if (GetParent(m_toolHandle) == GetFocus())
-		{
-			m_selectedObject = m_d3dRenderer.MousePicking(m_dxClientRect, m_cursorPos);
-			m_leftMouseBtnDown = false;
-
-		}
-	}
+		//update Scenegraph
+		//add to scenegraph
+		//resend scenegraph to Direct X renderer
 
 	//Renderer Update Call
 	m_d3dRenderer.Tick(&m_toolInputCommands);
-
-	if (updatedID)
-	{
-		m_d3dRenderer.BuildDisplayList(&m_sceneGraph);
-		updatedID = false;
-	}
-
-	// "Reset" input commands
-	m_toolInputCommands.mouse_X = m_toolInputCommands.mouse_Y = 0;
 }
 
 void ToolMain::UpdateInput(MSG * msg)
@@ -375,51 +306,12 @@ void ToolMain::UpdateInput(MSG * msg)
 		break;
 
 	case WM_MOUSEMOVE:
-		DirectX::Mouse::ProcessMessage(msg->message, msg->wParam, msg->lParam);
-		m_cursorPos.x = GET_X_LPARAM(msg->lParam);
-		m_cursorPos.y = GET_Y_LPARAM(msg->lParam);
 		break;
 
 	case WM_LBUTTONDOWN:	//mouse button down,  you will probably need to check when its up too
-							//set some flag for the mouse button in inputcommands
-
-		DirectX::Mouse::ProcessMessage(msg->message, msg->wParam, msg->lParam);
-
-		//m_cursorPos.x = GET_X_LPARAM(msg->lParam);
-		//m_cursorPos.y = GET_Y_LPARAM(msg->lParam);
-
-		m_leftMouseBtnDown = true;
-
+		//set some flag for the mouse button in inputcommands
 		break;
 
-	case WM_LBUTTONUP:
-		DirectX::Mouse::ProcessMessage(msg->message, msg->wParam, msg->lParam);
-		m_leftMouseBtnDown = false;
-		break;
-
-	}
-	//controls
-	if (m_keyArray[VK_SPACE])
-	{
-		m_captureCursorThisFrame = true;
-		m_captureCursorForCameraThisFrame = true;
-
-		// Simulates KEY PRESS instead of KEY DOWN
-		m_keyArray[' '] = false;
-	}
-	if (m_keyArray[VK_CONTROL] && m_keyArray['C'])
-	{
-		&m_sceneGraph[m_selectedObject];
-		m_isCopied = true;
-	}
-	if (m_keyArray[VK_CONTROL] && m_keyArray['V'] && m_isCopied)
-	{
-		m_sceneGraph.push_back(m_sceneGraph[m_selectedObject]);
-	}
-	if (m_keyArray[VK_DELETE])
-	{
-		m_sceneGraph.erase(m_sceneGraph.begin() + m_selectedObject);
-		m_d3dRenderer.BuildDisplayList(&m_sceneGraph);
 	}
 	//here we update all the actual app functionality that we want.  This information will either be used int toolmain, or sent down to the renderer (Camera movement etc
 	//WASD movement
@@ -428,7 +320,7 @@ void ToolMain::UpdateInput(MSG * msg)
 		m_toolInputCommands.forward = true;
 	}
 	else m_toolInputCommands.forward = false;
-
+	
 	if (m_keyArray['S'])
 	{
 		m_toolInputCommands.back = true;
@@ -445,125 +337,17 @@ void ToolMain::UpdateInput(MSG * msg)
 		m_toolInputCommands.right = true;
 	}
 	else m_toolInputCommands.right = false;
-	if (m_keyArray['F'])
-	{
-		if (!m_toolInputCommands.focusCamera)
-		{
-			m_toolInputCommands.focusCamera = true;
-		}
-		else m_toolInputCommands.focusCamera = false;
-		m_keyArray['F'] = false;
-	}
-	if (m_keyArray['O'])
-	{
-		m_toolInputCommands.orbCam = true;
-	}
-	else m_toolInputCommands.orbCam = false;
 	//rotation
-	if (!m_captureCursorThisFrame)
+	if (m_keyArray['E'])
 	{
-		if (m_keyArray['E'])
-		{
-			m_toolInputCommands.rotRight = true;
-		}
-		else m_toolInputCommands.rotRight = false;
-		if (m_keyArray['Q'])
-		{
-			m_toolInputCommands.rotLeft = true;
-		}
-		else m_toolInputCommands.rotLeft = false;
+		m_toolInputCommands.rotRight = true;
 	}
+	else m_toolInputCommands.rotRight = false;
+	if (m_keyArray['Q'])
+	{
+		m_toolInputCommands.rotLeft = true;
+	}
+	else m_toolInputCommands.rotLeft = false;
+
 	//WASD
-}
-
-void ToolMain::UpdateClientCenter()
-{
-	m_clientCenter = CalculateCenter(m_dxClientRect);
-}
-
-POINT ToolMain::CalculateCenter(const RECT & rect) const
-{
-	return{ rect.right / 2, rect.bottom / 2 };
-}
-
-void ToolMain::captureCursor(bool val, bool forFPSCamera)
-{
-	m_cursorCaptured = val;
-	m_cursorControlsCamera = (m_cursorCaptured && forFPSCamera);
-
-	// Show/hide cursor
-	ShowCursor(!m_cursorCaptured);
-
-	// Capture cursor
-	if (m_cursorCaptured)
-	{
-		// Lock the cursor to the dx render area
-		ClipCursor(&m_windowRect);
-
-		// Store the cursor position (in screen coordinates) so that we can move it back when they unlock the cursor
-		m_lastCursorPos = m_cursorPos;
-		ClientToScreen(m_toolHandle, &m_lastCursorPos);
-
-		// Move the cursor to the center of the screen
-		POINT clientCenterScreen = m_clientCenter;
-		ClientToScreen(m_toolHandle, &clientCenterScreen);
-
-		SetCursorPos(clientCenterScreen.x, clientCenterScreen.y);
-
-		// Overwrite the mouse coordinates found in input handling to avoid snapping
-		m_cursorPos = m_clientCenter;
-	}
-	// Release cursor
-	else
-	{
-		// Move the cursor back where we found it
-		SetCursorPos(m_lastCursorPos.x, m_lastCursorPos.y);
-
-		// "Unlock" the cursor
-		ClipCursor(nullptr);
-	}
-}
-
-SceneObject * ToolMain::GetSelectedObject()
-{
-	if (m_selectedObject > -1)
-	{
-		return &m_sceneGraph[m_selectedObject];
-	}
-	return nullptr;
-}
-
-void ToolMain::updateObject(SceneObject * sce, int ID)
-{
-	m_sceneGraph[ID] = *sce;
-	updatedID = true;
-}
-
-void ToolMain::WireFrameToggle()
-{
-	m_d3dRenderer.WireFrameToggle();
-}
-
-void ToolMain::LoadModel(std::string path)
-{
-	SceneObject newSceneObject;
-	newSceneObject.ID = m_sceneGraph.size() + 1;
-	newSceneObject.model_path = path;
-	newSceneObject.posX = 0.0f;
-	newSceneObject.posY = 0.0f;
-	newSceneObject.posZ = 0.0f;
-	newSceneObject.rotX = 0.0f;
-	newSceneObject.rotY = 0.0f;
-	newSceneObject.rotZ = 0.0f;
-	newSceneObject.scaX = 1.0f;
-	newSceneObject.scaY = 1.0f;
-	newSceneObject.scaZ = 1.0f;
-	m_sceneGraph.push_back(newSceneObject);
-	m_d3dRenderer.BuildDisplayList(&m_sceneGraph);
-}
-void ToolMain::TextureTerrain(std::string path)
-{
-	m_chunk.tex_diffuse_path = path;
-	m_d3dRenderer.m_displayChunk.UpdatedHeightMap(true);
-	m_d3dRenderer.BuildDisplayChunk(&m_chunk);
 }
