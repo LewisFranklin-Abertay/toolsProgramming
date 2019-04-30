@@ -1,0 +1,3 @@
+﻿  TransformWindow.cpp
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+  Win32SimpleSample.vcxproj -> M:\GitHub\toolsProgrammingMaster\x64\Debug\WoFEdit.exe
