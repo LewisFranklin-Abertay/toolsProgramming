@@ -334,7 +334,6 @@ void ToolMain::Tick(MSG *msg)
 		ClientToScreen(m_toolHandle, &clientCenterScreen);
 
 		SetCursorPos(clientCenterScreen.x, clientCenterScreen.y);
-
 	}
 
 	if (m_leftMouseBtnDown)
@@ -378,6 +377,8 @@ void ToolMain::UpdateInput(MSG * msg)
 		DirectX::Mouse::ProcessMessage(msg->message, msg->wParam, msg->lParam);
 		m_cursorPos.x = GET_X_LPARAM(msg->lParam);
 		m_cursorPos.y = GET_Y_LPARAM(msg->lParam);
+
+
 		break;
 
 	case WM_LBUTTONDOWN:	//mouse button down,  you will probably need to check when its up too

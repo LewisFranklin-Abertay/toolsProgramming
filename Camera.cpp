@@ -17,7 +17,7 @@ void Camera::Update(const InputCommands & inputCommands)
 	m_rotation.y += inputCommands.mouse_X;
 	m_rotation.x += inputCommands.mouse_Y;
 
-	// Avoid gimbal lock
+	//stops camera flipping upside down
 	m_rotation.x = std::min(m_rotation.x, +89.f);
 	m_rotation.x = std::max(m_rotation.x, -89.f);
 
@@ -57,7 +57,9 @@ void Camera::Update(const InputCommands & inputCommands)
 	}
 
 	//update lookat point
+
 	m_lookAt = m_position + m_forward;
+
 }
 
 DirectX::SimpleMath::Vector3 Camera::GetPosition() const
@@ -70,11 +72,33 @@ DirectX::SimpleMath::Matrix Camera::GetViewMatrix() const
 	return Matrix::CreateLookAt(m_position, m_lookAt, Vector3::UnitY);
 }
 
-DirectX::SimpleMath::Matrix Camera::FocusCameraOnObject(Vector3 obj)
+DirectX::SimpleMath::Matrix Camera::FocusCameraOnObject(const InputCommands & inputCommands, Vector3 obj)
 {
+
+	m_rotation.y += inputCommands.mouse_X;
+	m_rotation.x += inputCommands.mouse_Y;
+
+
+	float cosY = cosf(XMConvertToRadians(m_rotation.x));
+	float cosP = cosf(XMConvertToRadians(m_rotation.y));
+
+	float sinY = sinf(XMConvertToRadians(m_rotation.y));
+	float sinP = sinf(XMConvertToRadians(m_rotation.x));
+	//float cosY = cos(45);
+	//float cosP = cos(45);
+
+	//float sinY = sin(45);
+	//float sinP = sin(45);
+
+	m_forward.x += cosP * cosY;
+	m_forward.y += sinP;
+	m_forward.z += sinY * cosP;
+
+	m_forward.Normalize();
+
 	objPos = Vector3(obj.x, obj.y, obj.z);
 
-	return Matrix::CreateLookAt(objPos + OrbOffset, objPos, Vector3(0, 1, 0));
+	return Matrix::CreateLookAt(objPos  - (m_forward * 5), objPos, Vector3(0, 1, 0));
 }
 DirectX::SimpleMath::Matrix Camera::OrbCamera(Vector3 obj)
 {
@@ -82,7 +106,6 @@ DirectX::SimpleMath::Matrix Camera::OrbCamera(Vector3 obj)
 	objPos.x = obj.x;
 	objPos.y = obj.y;
 	objPos.z = obj.z;
-
 
 	//Matrix Transform = Matrix::Translation(objPos, OrbOffset);
 	Matrix rotY = Matrix::CreateRotationY(((m_rotation.y) * 3.1415 / 180)*0.01f);

@@ -54,7 +54,6 @@ void TransformWindow::DoDataExchange(CDataExchange * pDX)
 		DDX_Text(pDX, IDC_EDIT7, m_holdObject->scaX);
 		DDX_Text(pDX, IDC_EDIT8, m_holdObject->scaY);
 		DDX_Text(pDX, IDC_EDIT9, m_holdObject->scaZ);
-
 	}
 }
 

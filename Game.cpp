@@ -117,7 +117,7 @@ void Game::Update(DX::StepTimer const& timer)
 	{
 		if (m_InputCommands.focusCamera)
 		{
-			m_view = m_camera.FocusCameraOnObject(m_obj.m_position);
+			m_view = m_camera.FocusCameraOnObject(m_InputCommands , m_obj.m_position);
 		}
 		if (m_InputCommands.orbCam)
 		{

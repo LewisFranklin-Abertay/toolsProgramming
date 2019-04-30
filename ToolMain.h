@@ -63,7 +63,8 @@ private:	//variables
 	int m_currentChunk;			//the current chunk of thedatabase that we are operating on.  Dictates loading and saving. 
 
 
-								//camera stuff
+	//camera stuff
+	//like a vector2 but for mouse positions
 	POINT m_clientCenter{ 0, 0 };
 	POINT m_lastCursorPos{ 0, 0 }, m_cursorPos{ 0, 0 };
 	RECT m_windowRect, m_dxClientRect;

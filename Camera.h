@@ -15,16 +15,18 @@ public:
 
 	Vector3 GetPosition() const;
 	Matrix GetViewMatrix() const;
-	Matrix FocusCameraOnObject(Vector3 obj);
+	Matrix FocusCameraOnObject(const InputCommands & inputCommands, Vector3 obj);
 	Matrix OrbCamera(Vector3 obj);
+	Matrix ArcBallCamera(Vector3 obj);
 
 private:
 	Vector3 m_scale;
 	Vector3 m_rotation;
 	Vector3 m_position{ 0.f, 3.7f, -3.5f };
-	Vector3 OrbOffset{ 0.0f,5.0f,5.0f };
+	Vector3 OrbOffset{ 5.0f,5.0f,5.0f };
 	Vector3 m_forward;
 	Vector3 m_lookAt;
+	Vector3 m_Arcball;
 
 	Vector3 objPos;
 
