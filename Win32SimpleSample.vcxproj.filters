@@ -17,6 +17,9 @@
     <Filter Include="SQLITE">
       <UniqueIdentifier>{a006b0b6-46b2-4c4f-808a-ec8fe3e790eb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Inspector">
+      <UniqueIdentifier>{2421c4d0-7846-461c-995f-49974efa0eba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -64,6 +67,9 @@
     </ClCompile>
     <ClCompile Include="TransformWindow.cpp">
       <Filter>MFC</Filter>
+    </ClCompile>
+    <ClCompile Include="Inspector.cpp">
+      <Filter>Inspector</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -119,6 +125,9 @@
     </ClInclude>
     <ClInclude Include="TransformWindow.h">
       <Filter>MFC</Filter>
+    </ClInclude>
+    <ClInclude Include="Inspector.h">
+      <Filter>Inspector</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

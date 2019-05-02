@@ -18,6 +18,8 @@ Game::Game()
 {
 	m_deviceResources = std::make_unique<DX::DeviceResources>();
 	m_deviceResources->RegisterDeviceNotify(this);
+	m_inspdeviceResources = std::make_unique<DX::DeviceResources>();
+	m_inspdeviceResources->RegisterDeviceNotify(this);
 	m_displayList.clear();
 
 	//initial Settings
@@ -78,6 +80,18 @@ void Game::Initialize(HWND window, int width, int height)
 	m_effect1->Play(true);
 	m_effect2->Play();
 #endif
+}
+
+// Initialize the Direct3D resources required to run.
+void Game::InspectorInitialize(HWND window, int width, int height)
+{
+	m_inspdeviceResources->SetWindow(window, width, height);
+
+	m_inspdeviceResources->CreateDeviceResources();
+	CreateDeviceDependentResources();
+
+	m_inspdeviceResources->CreateWindowSizeDependentResources();
+	CreateWindowSizeDependentResources();
 }
 
 void Game::SetGridState(bool state)
@@ -229,6 +243,37 @@ void Game::Render()
 	m_deviceResources->Present();
 }
 
+void Game::InspRender()
+{
+	InspClear();
+
+	m_inspdeviceResources->PIXBeginEvent(L"Render");
+	auto context = m_inspdeviceResources->GetD3DDeviceContext();
+
+	//RENDER OBJECTS FROM SCENEGRAPH
+
+	m_inspdeviceResources->PIXBeginEvent(L"Draw model");
+
+	const XMVECTORF32 scale = { m_displayList[selectedID].m_scale.x, m_displayList[selectedID].m_scale.y, m_displayList[selectedID].m_scale.z };
+	const XMVECTORF32 translate = { m_displayList[selectedID].m_position.x, m_displayList[selectedID].m_position.y, m_displayList[selectedID].m_position.z };
+
+	//convert degrees into radians for rotation matrix
+	XMVECTOR rotate = Quaternion::CreateFromYawPitchRoll(m_displayList[selectedID].m_orientation.y *3.1415 / 180,
+	m_displayList[selectedID].m_orientation.x *3.1415 / 180,
+	m_displayList[selectedID].m_orientation.z *3.1415 / 180);
+
+	XMMATRIX local = m_world * XMMatrixTransformation(g_XMZero, Quaternion::Identity, scale, g_XMZero, rotate, translate);
+
+	m_displayList[selectedID].m_model->Draw(context, *m_states, local, m_view, m_projection, false);	//last variable in draw,  make TRUE for wireframe
+
+	m_inspdeviceResources->PIXEndEvent();
+
+	//Render the batch,  This is handled in the Display chunk becuase it has the potential to get complex
+	m_displayChunk.RenderBatch(m_inspdeviceResources);
+
+	m_inspdeviceResources->Present();
+}
+
 // Helper method to clear the back buffers.
 void Game::Clear()
 {
@@ -248,6 +293,26 @@ void Game::Clear()
 	context->RSSetViewports(1, &viewport);
 
 	m_deviceResources->PIXEndEvent();
+}
+
+void Game::InspClear()
+{
+	m_inspdeviceResources->PIXBeginEvent(L"Clear");
+
+	// Clear the views.
+	auto context = m_inspdeviceResources->GetD3DDeviceContext();
+	auto renderTarget = m_inspdeviceResources->GetBackBufferRenderTargetView();
+	auto depthStencil = m_inspdeviceResources->GetDepthStencilView();
+
+	context->ClearRenderTargetView(renderTarget, Colors::CornflowerBlue);
+	context->ClearDepthStencilView(depthStencil, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+	context->OMSetRenderTargets(1, &renderTarget, depthStencil);
+
+	// Set the viewport.
+	auto viewport = m_inspdeviceResources->GetScreenViewport();
+	context->RSSetViewports(1, &viewport);
+
+	m_inspdeviceResources->PIXEndEvent();
 }
 
 void XM_CALLCONV Game::DrawGrid(FXMVECTOR xAxis, FXMVECTOR yAxis, FXMVECTOR origin, size_t xdivs, size_t ydivs, GXMVECTOR color)

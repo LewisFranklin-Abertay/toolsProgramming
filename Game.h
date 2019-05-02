@@ -26,14 +26,17 @@ public:
 
 	// Initialization and management
 	void Initialize(HWND window, int width, int height);
+	void InspectorInitialize(HWND window, int width, int height);
 	void SetGridState(bool state);
 
 	// Basic game loop
 	void Tick(InputCommands * Input);
 	void Render();
+	void InspRender();
 
 	// Rendering helpers
 	void Clear();
+	void InspClear();
 
 	// IDeviceNotify
 	virtual void OnDeviceLost() override;
@@ -90,6 +93,7 @@ private:
 	bool m_grid;							//grid rendering on / off
 											// Device resources.
 	std::shared_ptr<DX::DeviceResources>    m_deviceResources;
+	std::shared_ptr<DX::DeviceResources>    m_inspdeviceResources;
 
 	// Rendering loop timer.
 	DX::StepTimer                           m_timer;

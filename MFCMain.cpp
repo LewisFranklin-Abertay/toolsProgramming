@@ -9,6 +9,7 @@ BEGIN_MESSAGE_MAP(MFCMain, CWinApp)
 	ON_COMMAND(ID_EDIT_TEXTURETERRAIN, &MFCMain::MenuEditLoadTerrainTexture)
 	ON_COMMAND(ID_EDIT_NEWMODEL, &MFCMain::MenuEditNewModel)
 	ON_COMMAND(ID_EDIT_SELECT, &MFCMain::MenuEditSelect)
+	ON_COMMAND(ID_EDIT_MODELINSPECTOR, &MFCMain::MenuEditInspector)
 	ON_COMMAND(ID_EDIT_TRANSFORM, &MFCMain::MenuEditTransform)
 	ON_COMMAND(ID_BUTTON40001, &MFCMain::ToolBarButton1)
 	ON_COMMAND(ID_BUTTON40009, &MFCMain::ToolBarButton2)
@@ -19,6 +20,7 @@ BOOL MFCMain::InitInstance()
 {
 	//instanciate the mfc frame
 	m_frame = new CMyFrame();
+
 	m_pMainWnd = m_frame;
 
 	m_frame->Create(NULL,
@@ -30,6 +32,8 @@ BOOL MFCMain::InitInstance()
 		0,
 		NULL
 	);
+
+
 
 	//show and set the window to run and update. 
 	m_frame->ShowWindow(SW_SHOW);
@@ -106,6 +110,34 @@ void MFCMain::MenuFileQuit()
 	PostQuitMessage(0);
 }
 
+void MFCMain::MenuEditInspector()
+{
+	m_Inspector = new CMyFrame();
+
+	m_Inspector->Create(NULL,
+		_T("Model Inspector"),
+		WS_OVERLAPPEDWINDOW /*WS_EX_TOOLWINDOW*/,
+		CRect(100, 100, 640, 480),
+		NULL,
+		NULL,
+		0,
+		NULL
+	);
+
+	m_pActiveWnd = m_Inspector;
+
+	m_Inspector->ShowWindow(SW_SHOW);
+	m_Inspector->UpdateWindow();
+	m_Inspector->m_pInspector = &m_InspectorSystem;
+
+	//get the rect from the MFC window so we can get its dimensions
+	m_inspectorHandle = m_Inspector->m_DirXView.GetSafeHwnd();				//handle of directX child window
+	m_Inspector->m_DirXView.GetClientRect(&InspectorWindowRECT);
+	m_width = InspectorWindowRECT.Width();
+	m_height = InspectorWindowRECT.Height();
+
+	m_ToolSystem.m_d3dRenderer.InspectorInitialize(m_inspectorHandle, m_width, m_height);
+}
 void MFCMain::MenuFileSaveTerrain()
 {
 	m_ToolSystem.onActionSaveTerrain();

@@ -4,6 +4,7 @@
 #include "MFCRenderFrame.h"
 #include "ToolMain.h"
 #include "TransformWindow.h"
+#include "Inspector.h"
 
 
 
@@ -19,6 +20,7 @@ public:
 	CToolBar		m_toolBar;
 	CChildRender	m_DirXView;
 	ToolMain*		m_toolMain;
+	Inspector*		m_pInspector;
 	TransformWindow m_TransformDialogue;
 
 public:
